@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { Config } from '..';
+import { NetworkConfigProvider } from '../config';
 import { ApiEndpoint } from './ApiEndpoint';
 import { MethodType } from './ApiEnum';
 
@@ -55,7 +55,7 @@ export class ApiRequest {
 
     getURL(includeHost: boolean) {
         const urlArray: string[] = [];
-        includeHost && urlArray.push(Config.getHost());
+        includeHost && urlArray.push(NetworkConfigProvider.getHost());
 
         // Set Endpoint with Parameter
         let endpoint = this.apiEndpoint.path;

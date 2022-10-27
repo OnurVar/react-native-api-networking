@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { errorLogger, requestLogger, responseLogger } from 'axios-logger';
 
-import { Config } from '..';
+import { NetworkConfigProvider } from '../config';
 import { ApiRequest } from '../model';
-import { DefaultLoggerConfig, getErrorMessage } from '../util';
 import { DefaultClient } from './DefaultClient';
 import { TokenClient } from './TokenClient';
+import { DefaultLoggerConfig } from './util';
 
 const TOTAL_NUMBER_OF_TRY = 2;
 export class NetworkClient extends DefaultClient {
@@ -16,15 +16,15 @@ export class NetworkClient extends DefaultClient {
 
     //MARK: Public Methods
 
-    async makeRequest(request: ApiRequest) {
-        return super.makeRequest(request, this.getClientInstance());
+    async execute(request: ApiRequest) {
+        return super.execute(request, this.getClientInstance());
     }
 
     //MARK: Client
 
     private getClientInstance() {
         const axiosClient = axios.create();
-        axiosClient.interceptors.request.use(this.interceptBeforeRequest, error => errorLogger(error));
+        axiosClient.interceptors.request.use(this.interceptBeforeRequest, error => errorLogger(error, DefaultLoggerConfig));
         axiosClient.interceptors.response.use(response => responseLogger(response, DefaultLoggerConfig), this.interceptAfterResponse);
         return axiosClient;
     }
@@ -32,17 +32,17 @@ export class NetworkClient extends DefaultClient {
     //MARK: Interceptors
 
     private async interceptBeforeRequest(config: AxiosRequestConfig) {
-        let accessToken = Config.getAccessToken();
-        Config.log(`[NetworkClient] [interceptBeforeRequest] Token: ${accessToken || ''}`);
+        let accessToken = NetworkConfigProvider.getAccessToken();
+        NetworkConfigProvider.log(`[NetworkClient] [interceptBeforeRequest] Token: ${accessToken || ''}`);
 
         //Check if token is expired
-        if (Config.shouldRenewTokenBeforeRequest()) {
-            Config.log(`[NetworkClient] [interceptBeforeRequest] [TOKEN_EXPIRED] FETCHING NEW TOKEN`);
+        if (NetworkConfigProvider.shouldRenewTokenBeforeRequest()) {
+            NetworkConfigProvider.log(`[NetworkClient] [interceptBeforeRequest] [TOKEN_EXPIRED] FETCHING NEW TOKEN`);
 
             const tokenClient = new TokenClient();
             await tokenClient.getNewToken();
 
-            accessToken = Config.getAccessToken();
+            accessToken = NetworkConfigProvider.getAccessToken();
         }
 
         //Set Token
@@ -54,11 +54,11 @@ export class NetworkClient extends DefaultClient {
     }
 
     private async interceptAfterResponse(error: any) {
-        const errorMessage = getErrorMessage(error);
-        Config.log(`[NetworkClient] [interceptAfterResponse] ${errorMessage}`);
+        const errorMessage = NetworkConfigProvider.onErrorReceive(error);
+        NetworkConfigProvider.log(`[NetworkClient] [interceptAfterResponse] ${errorMessage}`);
 
-        if (Config.shoudlRenewToken(errorMessage)) {
-            Config.log(`[NetworkClient] [interceptAfterResponse] [TOKEN_EXPIRED] FETCHING NEW TOKEN`);
+        if (NetworkConfigProvider.shoudlRenewToken(errorMessage)) {
+            NetworkConfigProvider.log(`[NetworkClient] [interceptAfterResponse] [TOKEN_EXPIRED] FETCHING NEW TOKEN`);
 
             const tokenClient = new TokenClient();
             await tokenClient.getNewToken();
@@ -68,9 +68,9 @@ export class NetworkClient extends DefaultClient {
             if (this.countFetchToken < TOTAL_NUMBER_OF_TRY + 1) {
                 return this.getClientInstance().request(error.config);
             }
-        } else if (Config.shoudlLogout(errorMessage)) {
-            Config.logout();
+        } else if (NetworkConfigProvider.shoudlLogout(errorMessage)) {
+            NetworkConfigProvider.logout();
         }
-        return errorLogger(error);
+        return errorLogger(error, DefaultLoggerConfig);
     }
 }

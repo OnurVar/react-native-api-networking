@@ -1,1 +1,2 @@
-export * from './NetworkConfig';
+export * from './NetworkConfigProvider';
+export * from './NetworkConfigSetupProvider';

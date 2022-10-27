@@ -27,5 +27,5 @@ export const DefaultLogicConfig: LogicConfig = {
 export const DefaultNetworkConfig: NetworkConfig = {
     getHost: () => '',
     onResponseReceive: (_response: AxiosResponse<ApiResponse>) => undefined,
-    onErrorReceive: (_response: AxiosResponse<ApiResponse>) => undefined,
+    onErrorReceive: (_error: any) => '',
 };

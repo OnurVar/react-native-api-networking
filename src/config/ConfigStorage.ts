@@ -1,7 +1,7 @@
 import { AuthenticationConfig, HelperConfig, LogicConfig, NetworkConfig } from './model';
 import { DefaultAuthenticationConfig, DefaultHelperConfig, DefaultLogicConfig, DefaultNetworkConfig } from './util';
 
-export class ConfigProvider {
+export class ConfigStorage {
     //MARK: Public Variables
     private authenticationConfig: AuthenticationConfig = DefaultAuthenticationConfig;
     private helperConfig: HelperConfig = DefaultHelperConfig;
@@ -9,46 +9,46 @@ export class ConfigProvider {
     private networkConfig: NetworkConfig = DefaultNetworkConfig;
 
     //MARK: Private Variables
-    private static instance: ConfigProvider;
+    private static instance: ConfigStorage;
 
     //MARK: Life Cycle
-    static getInstance(): ConfigProvider {
-        if (!ConfigProvider.instance) {
-            ConfigProvider.instance = new ConfigProvider();
+    static getInstance(): ConfigStorage {
+        if (!ConfigStorage.instance) {
+            ConfigStorage.instance = new ConfigStorage();
         }
 
-        return ConfigProvider.instance;
+        return ConfigStorage.instance;
     }
 
     setupAuthenticationConfig(config: AuthenticationConfig) {
-        ConfigProvider.getInstance().authenticationConfig = config;
+        ConfigStorage.getInstance().authenticationConfig = config;
     }
 
     setupHelperConfig(config: HelperConfig) {
-        ConfigProvider.getInstance().helperConfig = config;
+        ConfigStorage.getInstance().helperConfig = config;
     }
 
     setupLogicConfig(config: LogicConfig) {
-        ConfigProvider.getInstance().logicConfig = config;
+        ConfigStorage.getInstance().logicConfig = config;
     }
 
     setupNetworkConfig(config: NetworkConfig) {
-        ConfigProvider.getInstance().networkConfig = config;
+        ConfigStorage.getInstance().networkConfig = config;
     }
 
     getNetworkConfig() {
-        return ConfigProvider.getInstance().networkConfig;
+        return ConfigStorage.getInstance().networkConfig;
     }
 
     getAuthenticationConfig() {
-        return ConfigProvider.getInstance().authenticationConfig;
+        return ConfigStorage.getInstance().authenticationConfig;
     }
 
     getHelperConfig() {
-        return ConfigProvider.getInstance().helperConfig;
+        return ConfigStorage.getInstance().helperConfig;
     }
 
     getLogicConfig() {
-        return ConfigProvider.getInstance().logicConfig;
+        return ConfigStorage.getInstance().logicConfig;
     }
 }
