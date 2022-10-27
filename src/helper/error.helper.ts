@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '../model';
 
 export const DefaultApiErrorParser = (error: any) => {
-    var errorArray: string[] = [];
+    const errorArray: string[] = [];
     if (error) {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<ApiResponse>;
