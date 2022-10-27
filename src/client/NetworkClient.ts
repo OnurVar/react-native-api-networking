@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { errorLogger, requestLogger, responseLogger } from 'axios-logger';
 
 import { Config } from '..';
-import { ApiRequest } from '../Model';
+import { ApiRequest } from '../model';
 import { DefaultLoggerConfig, getErrorMessage } from '../util';
 import { DefaultClient } from './DefaultClient';
 import { TokenClient } from './TokenClient';

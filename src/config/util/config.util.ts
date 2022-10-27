@@ -6,16 +6,20 @@ import { AuthenticationConfig, HelperConfig, LogicConfig, NetworkConfig } from '
 export const DefaultAuthenticationConfig: AuthenticationConfig = {
     getAccessToken: () => undefined,
     getRefreshToken: () => undefined,
-    logout: () => {},
+    logout: () => {
+        return;
+    },
     getRefreshTokenRequest: () => undefined,
 };
 
 export const DefaultHelperConfig: HelperConfig = {
-    log: (_message: string) => {},
+    log: (_message: string) => {
+        return;
+    },
 };
 
 export const DefaultLogicConfig: LogicConfig = {
-    shoudlLogout: (message: string) => false,
+    shoudlLogout: (_message: string) => false,
     shoudlRenewToken: (_message: string) => false,
     shouldRenewTokenBeforeRequest: () => false,
 };

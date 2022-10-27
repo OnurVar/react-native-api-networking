@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 
 import { Config } from '..';
 import { ApiRequest, ApiResponse } from '../model';

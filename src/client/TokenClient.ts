@@ -2,8 +2,7 @@ import axios from 'axios';
 import { errorLogger, requestLogger, responseLogger } from 'axios-logger';
 
 import { Config } from '..';
-import { ApiRequest } from '../model';
-import { ApiToken } from '../Model';
+import { ApiRequest, ApiToken } from '../model';
 import { DefaultClient } from './DefaultClient';
 
 export class TokenClient extends DefaultClient {
