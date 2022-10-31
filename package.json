@@ -1,6 +1,6 @@
 {
     "name": "react-native-api-networking",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "Simple API Network Clients for React Native",
     "repository": "git@github.com:OnurVar/react-native-api-networking.git",
     "author": "Onur Var <var.onur@hotmail.com>",
