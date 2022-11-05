@@ -12,13 +12,18 @@ export const DefaultApiResponseParser = (axiosResponse: AxiosResponse<ApiRespons
         }
 
         const message = response.message;
-        if (typeof status === 'number') {
+        if (typeof message === 'string') {
             errorArray.push(`Request failed with message ${message}`);
         }
 
         const error = response.error;
-        if (typeof status === 'number') {
+        if (typeof error === 'string') {
             errorArray.push(`Request failed with message ${error}`);
+        }
+
+        // Catch if there is no error message
+        if (errorArray.length === 0) {
+            errorArray.push(`Request failed with unknown error`);
         }
     }
 
