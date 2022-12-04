@@ -4,7 +4,6 @@ import { errorLogger, requestLogger, responseLogger } from 'axios-logger';
 import { NetworkConfigProvider } from '../config';
 import { ApiRequest, ApiToken } from '../model';
 import { DefaultClient } from './DefaultClient';
-import { DefaultLoggerConfig } from './util';
 
 export class TokenClient extends DefaultClient {
     async execute(request: ApiRequest) {
@@ -14,12 +13,12 @@ export class TokenClient extends DefaultClient {
     private getClientInstance() {
         const axiosClient = axios.create();
         axiosClient.interceptors.request.use(
-            request => requestLogger(request, DefaultLoggerConfig),
-            error => errorLogger(error, DefaultLoggerConfig),
+            request => requestLogger(request, NetworkConfigProvider.getLoggerConfig()),
+            error => errorLogger(error, NetworkConfigProvider.getLoggerConfig()),
         );
         axiosClient.interceptors.response.use(
-            response => responseLogger(response, DefaultLoggerConfig),
-            error => errorLogger(error, DefaultLoggerConfig),
+            response => responseLogger(response, NetworkConfigProvider.getLoggerConfig()),
+            error => errorLogger(error, NetworkConfigProvider.getLoggerConfig()),
         );
         return axiosClient;
     }

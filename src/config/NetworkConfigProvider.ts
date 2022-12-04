@@ -21,6 +21,9 @@ export const NetworkConfigProvider: Config = {
     log: (message: string) => {
         return ConfigStorage.getInstance().helperConfig.log(message);
     },
+    getLoggerConfig: () => {
+        return ConfigStorage.getInstance().helperConfig.getLoggerConfig();
+    },
     shoudlLogout: (message: string) => {
         return ConfigStorage.getInstance().logicConfig.shoudlLogout(message);
     },

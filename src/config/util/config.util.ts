@@ -16,6 +16,13 @@ export const DefaultHelperConfig: HelperConfig = {
     log: (_message: string) => {
         return;
     },
+    getLoggerConfig: () => {
+        return {
+            data: true,
+            headers: true,
+            dateFormat: 'HH:MM:ss',
+        };
+    },
 };
 
 export const DefaultLogicConfig: LogicConfig = {

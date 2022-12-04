@@ -5,7 +5,6 @@ import { NetworkConfigProvider } from '../config';
 import { ApiRequest } from '../model';
 import { DefaultClient } from './DefaultClient';
 import { TokenClient } from './TokenClient';
-import { DefaultLoggerConfig } from './util';
 
 const TOTAL_NUMBER_OF_TRY = 2;
 export class NetworkClient extends DefaultClient {
@@ -24,8 +23,8 @@ export class NetworkClient extends DefaultClient {
 
     private getClientInstance() {
         const axiosClient = axios.create();
-        axiosClient.interceptors.request.use(this.interceptBeforeRequest, error => errorLogger(error, DefaultLoggerConfig));
-        axiosClient.interceptors.response.use(response => responseLogger(response, DefaultLoggerConfig), this.interceptAfterResponse);
+        axiosClient.interceptors.request.use(this.interceptBeforeRequest, error => errorLogger(error, NetworkConfigProvider.getLoggerConfig()));
+        axiosClient.interceptors.response.use(response => responseLogger(response, NetworkConfigProvider.getLoggerConfig()), this.interceptAfterResponse);
         return axiosClient;
     }
 
@@ -50,7 +49,7 @@ export class NetworkClient extends DefaultClient {
             config.headers.Authorization = 'Bearer ' + accessToken;
         }
 
-        return requestLogger(config, DefaultLoggerConfig);
+        return requestLogger(config, NetworkConfigProvider.getLoggerConfig());
     }
 
     private async interceptAfterResponse(error: any) {
@@ -71,6 +70,6 @@ export class NetworkClient extends DefaultClient {
         } else if (NetworkConfigProvider.shoudlLogout(errorMessage)) {
             NetworkConfigProvider.logout();
         }
-        return errorLogger(error, DefaultLoggerConfig);
+        return errorLogger(error, NetworkConfigProvider.getLoggerConfig());
     }
 }
