@@ -25,7 +25,7 @@ export class TokenClient extends DefaultClient {
 
     async getNewToken() {
         const request = NetworkConfigProvider.getRefreshTokenRequest();
-        if (typeof request !== 'string') {
+        if (typeof request === 'undefined') {
             NetworkConfigProvider.log('[TokenClient] [getNewToken] NO REFRESH TOKEN REQUEST');
             return;
         }
