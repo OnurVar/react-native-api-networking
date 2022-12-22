@@ -23,8 +23,14 @@ export class NetworkClient extends DefaultClient {
 
     private getClientInstance() {
         const axiosClient = axios.create();
-        axiosClient.interceptors.request.use(this.interceptBeforeRequest, error => errorLogger(error, NetworkConfigProvider.getLoggerConfig()));
-        axiosClient.interceptors.response.use(response => responseLogger(response, NetworkConfigProvider.getLoggerConfig()), this.interceptAfterResponse);
+        axiosClient.interceptors.request.use(
+            config => this.interceptBeforeRequest(config),
+            error => errorLogger(error, NetworkConfigProvider.getLoggerConfig()),
+        );
+        axiosClient.interceptors.response.use(
+            response => responseLogger(response, NetworkConfigProvider.getLoggerConfig()),
+            error => this.interceptAfterResponse(error),
+        );
         return axiosClient;
     }
 
